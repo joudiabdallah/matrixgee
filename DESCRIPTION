@@ -1,0 +1,17 @@
+Package: matrixgee
+Type: Package
+Title: GEE Applied to a Matrix of Data
+Version: 0.1.0
+Authors@R: person("Joudi", "Abdallah", email = "j.abdallah1@uni.brighton.ac.uk",
+  role = c("aut", "cre"))
+Description: Apply GEE Models for matrix data by decomposing the correlation
+    structure of the response into correlations over rows and columns using
+    Kronecker product decomposition. Supports independent model updates based
+    on the decomposed correlation structure and accommodates various correlation
+    structures and response forms.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+LinkingTo: Rcpp, RcppArmadillo
+Imports: Rcpp
+RoxygenNote: 7.3.2
