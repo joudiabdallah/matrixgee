@@ -1,0 +1,112 @@
+---
+title: "matrixgee: Core Usage"
+author: "Judy Abdallah"
+date: "`r format(Sys.Date())`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{matrixgee: Core Usage}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(collapse=TRUE, comment="#>", message=FALSE, warning=FALSE)
+```
+
+# Overview
+
+`matrixgee` fits Generalized Estimating Equations (GEE) for matrix‑valued responses.
+
+**Two fitting functions:**
+- `matrixgee_cpp()` — Kronecker working correlation (separate row/column).
+- `matrixgee_cpp_nokron()` — general (non‑Kronecker) working correlation.
+
+# Data layout
+
+For `N` subjects, each with an `r` by `c` response matrix, arrange the data as an **`r` by `(N*c)`** matrix.
+
+- For subject *i* (1‑based), columns **`((i-1)*c + 1):(i*c)`** correspond to that subject’s matrix `Y_i`.
+- This layout is required by both fitting functions.
+
+# `matrixgee_cpp()` — Kronecker working correlation
+
+Fits a Gaussian (identity‑link) GEE where rows and columns have separate working correlations, combined via a Kronecker product. Correlations are estimated from an initial independence fit and updated iteratively.
+
+**Usage**
+```r
+matrixgee_cpp(
+  data,            # numeric r by (N*c)
+  covariates,      # vector length N*q or a matrix
+  intercept,       # "scalar_intercept" | "row_intercept" | "column_intercept" | "matrix_intercept"
+  sample_size,     # N
+  rows_no,         # r
+  cols_no,         # c
+  max_iter,        # outer iterations for correlation+refit
+  tol,             # convergence tolerance on coefficients
+  corstr_rows,     # "independence" | "exchangeable" | "ar1"
+  corstr_cols      # "independence" | "exchangeable" | "ar1"
+)
+```
+
+**Arguments (summary)**
+
+- `data`: numeric matrix with dimension *r* by *(N*c)*; blocks of `c` columns per subject.
+- `covariates`: a numeric vector of length *N*q* (stacked subject‑level covariates) **or** a numeric matrix for cell‑/row‑/column‑varying covariates.
+- `intercept`: `"scalar_intercept"`, `"row_intercept"`, `"column_intercept"`, or `"matrix_intercept"`.
+- `sample_size`, `rows_no`, `cols_no`: integers `N`, `r`, `c`.
+- `max_iter`: maximum outer iterations (estimate correlations → refit).
+- `tol`: stop when `max(abs(beta_new - beta_old)) < tol`.
+- `corstr_rows`, `corstr_cols`: working correlations for rows/columns.
+
+**Value**
+
+A list with `beta_hat`, `robust_covariance`, `residuals`, `phi`, `converged`, and `iterations`.
+
+---
+
+# `matrixgee_cpp_nokron()` — general working correlation
+
+Fits a Gaussian (identity‑link) GEE where the working correlation is a single general correlation on `vec(Y)` (not separated into row/column parts). Estimated from residuals and updated iteratively.
+
+**Usage**
+```r
+matrixgee_cpp_nokron(
+  data, covariates, intercept,
+  sample_size, rows_no, cols_no,
+  max_iter, tol, corstr
+)
+```
+
+**Arguments/return**: analogous to `matrixgee_cpp()`, with a single `corstr` for the general correlation.
+
+# Minimal example 
+
+```r
+# library(matrixgee)  
+set.seed(1)
+N <- 4; r <- 3; c <- 2; q <- 2
+covs <- rnorm(N*q)
+Y <- matrix(rnorm(r*N*c), nrow = r, ncol = N*c)
+
+fit <- matrixgee_cpp(
+  data        = Y,
+  covariates  = covs,
+  intercept   = "row_intercept",
+  sample_size = N,
+  rows_no     = r,
+  cols_no     = c,
+  max_iter    = 10,
+  tol         = 1e-6,
+  corstr_rows = "independence",
+  corstr_cols = "independence"
+)
+str(fit$beta_hat)
+```
+
+
+
+# Session info
+
+```{r}
+sessionInfo()
+```

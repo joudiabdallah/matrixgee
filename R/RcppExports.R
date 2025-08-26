@@ -33,10 +33,6 @@ covariates_upd <- function(covariates, sample_size, rows_no, cols_no) {
     .Call(`_matrixgee_covariates_upd`, covariates, sample_size, rows_no, cols_no)
 }
 
-create_design_matrix_cpp <- function(N, r, c, intercepts, covariates_block) {
-    .Call(`_matrixgee_create_design_matrix_cpp`, N, r, c, intercepts, covariates_block)
-}
-
 update_beta_gee_cc <- function(y_vector, model_matrix, id_vector, repeated_vector, weights_vector, link, family, beta_vector, mu_vector, eta_vector, correlation_structure, alpha_vector, phi) {
     .Call(`_matrixgee_update_beta_gee_cc`, y_vector, model_matrix, id_vector, repeated_vector, weights_vector, link, family, beta_vector, mu_vector, eta_vector, correlation_structure, alpha_vector, phi)
 }
@@ -143,10 +139,6 @@ matrixgee_cpp <- function(data, covariates, intercept, sample_size, rows_no, col
 
 matrixgee_cpp_nokron <- function(data, covariates, intercept, sample_size, rows_no, cols_no, max_iter, tol, corstr) {
     .Call(`_matrixgee_matrixgee_cpp_nokron`, data, covariates, intercept, sample_size, rows_no, cols_no, max_iter, tol, corstr)
-}
-
-matrixgee_cpp_upd <- function(data, covariates, intercepts, sample_size, rows_no, cols_no, max_iter, tol, corstr_rows, corstr_cols) {
-    .Call(`_matrixgee_matrixgee_cpp_upd`, data, covariates, intercepts, sample_size, rows_no, cols_no, max_iter, tol, corstr_rows, corstr_cols)
 }
 
 get_pearson_residuals <- function(family, y_vector, mu_vector, weights_vector) {

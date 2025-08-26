@@ -52,14 +52,6 @@ List matrixgee_cpp(NumericMatrix data,
         }
         Rcout << std::endl;
 
-        //IntegerVector id = long_format_dataset["id"];
-        //IntegerVector rowcol_index = long_format_dataset["rowcol_index"];
-        //NumericVector id_num = as<NumericVector>(long_format_dataset["id"]);
-        //arma::vec id = as<arma::vec>(id_num);
-        //NumericVector rowcol_index_num = as<NumericVector>(long_format_dataset["rowcol_index"]);
-        //arma::vec rowcol_index = as<arma::vec>(rowcol_index_num);
-        //NumericVector id_num = as<NumericVector>(long_format_dataset["id"]);
-        //NumericVector rowcol_index_num = as<NumericVector>(long_format_dataset["rowcol_index"]);
         Function cbind("cbind");
         int parameters_no;
 
@@ -69,10 +61,10 @@ List matrixgee_cpp(NumericMatrix data,
         arma::mat ones_c = arma::ones<arma::mat>(cols_no, 1);
         arma::mat I_R = arma::eye<arma::mat>(rows_no, rows_no);
         //get the covariates_fct
-        //List covariates_fct = covariates_cpp(covariates, sample_size, rows_no, cols_no,intercept);
+
         List covariates_fct = covariates_upd(covariates, sample_size, rows_no, cols_no);
-        // Extract covparams_no
-        //int covparams_no = as<int>(covariates_fct["paramscov_no"]);
+
+
         // Extract covariates_block
         arma::mat covariates_block = covariates_fct["design_covblock"];
         //get the number of columns in covariates block
@@ -81,8 +73,8 @@ List matrixgee_cpp(NumericMatrix data,
         int nrows = covariates_block.n_rows;
         //create an empty list covariates_df of length ncols
         List covariates_df(ncols);
-        Rcout << "covariates_block size: "
-              << covariates_block.n_rows << " x " << covariates_block.n_cols << std::endl;
+        //Rcout << "covariates_block size: "
+              //<< covariates_block.n_rows << " x " << covariates_block.n_cols << std::endl;
 
         for (int j = 0; j < ncols; ++j) {
                 NumericVector col(nrows);
@@ -107,20 +99,6 @@ List matrixgee_cpp(NumericMatrix data,
         //long_format_dataset = DataFrame(Rcpp::wrap(Rcpp::List(long_format_dataset).attr("names")));
         long_format_dataset = Rcpp::as<DataFrame>(Rcpp::Function("cbind")(long_format_dataset, covariates_block_df));
 
-        // Call cbind() and store its result in a temporary R object
-        //RObject cbind_result = Rcpp::Function("cbind")(long_format_dataset, covariates_block_df);
-
-        // Print the type of the result
-        //Rcout << "[DEBUG] cbind_result SEXP type: " << cbind_result.sexp_type() << std::endl;
-
-        // Convert to DataFrame and inspect dimensions
-        //DataFrame combined_df = Rcpp::as<DataFrame>(cbind_result);
-
-        //Rcout << "[DEBUG] combined_df row count: " << combined_df.nrows() << std::endl;
-        //Rcout << "[DEBUG] combined_df column count: " << combined_df.size() << std::endl;
-
-        // Assign it back to long_format_dataset
-        //long_format_dataset = combined_df;
 
 
 
@@ -206,7 +184,7 @@ List matrixgee_cpp(NumericMatrix data,
 
                 arma::mat XtX = model_matrix.t() * model_matrix;
 
-                //parameters_no = model_matrix.n_cols;
+
 
         }
 
@@ -214,7 +192,7 @@ List matrixgee_cpp(NumericMatrix data,
                 arma::mat i_c = arma::eye<arma::mat>(cols_no, cols_no);
                 arma::mat ones_r = arma::ones<arma::mat>(rows_no, 1);
                 arma::mat ones_I = arma::ones<arma::mat>(sample_size, 1);
-                //arma::mat intblock = arma::kron(i_c, ones_r);
+
                 arma::mat intblock = arma::kron(ones_I, arma::kron(i_c, ones_r));
 
                 int ncols = intblock.n_cols;
@@ -267,7 +245,7 @@ List matrixgee_cpp(NumericMatrix data,
                 SEXP formula = as_formula(formula_str);
 
                 model_matrix = Rcpp::as<arma::mat>(model_matrix_f(formula, long_format_dataset));
-                //parameters_no = model_matrix.n_cols;
+
 
         }
 
@@ -276,7 +254,7 @@ List matrixgee_cpp(NumericMatrix data,
                 arma::mat ones_I = arma::ones<arma::mat>(sample_size, 1);
                 arma::mat i_c = arma::eye<arma::mat>(cols_no, cols_no);
                 arma::mat i_r = arma::eye<arma::mat>(rows_no, rows_no);
-                //arma::mat intblock = arma::kron(i_c, i_r);
+
                 arma::mat intblock = arma::kron(ones_I, arma::kron(i_c, i_r));
 
 
@@ -329,7 +307,7 @@ List matrixgee_cpp(NumericMatrix data,
                 Function model_matrix_f("model.matrix");
                 SEXP formula = as_formula(formula_str);
                 model_matrix = Rcpp::as<arma::mat>(model_matrix_f(formula, long_format_dataset));
-                //parameters_no = model_matrix.n_cols;
+
 
 
 
@@ -340,7 +318,7 @@ List matrixgee_cpp(NumericMatrix data,
                 arma::mat ones_I = arma::ones<arma::mat>(sample_size, 1);
                 arma::mat one_c = arma::ones<arma::mat>(cols_no, 1);
                 arma::mat one_r = arma::ones<arma::mat>(rows_no, 1);
-                //arma::mat intblock = arma::kron(one_c, one_r);
+
                 arma::mat intblock = arma::kron(ones_I, arma::kron(one_c, one_r));
 
 
@@ -388,7 +366,7 @@ List matrixgee_cpp(NumericMatrix data,
                 Function model_matrix_f("model.matrix");
                 SEXP formula = as_formula(formula_str);
                 model_matrix = Rcpp::as<arma::mat>(model_matrix_f(formula, long_format_dataset));
-                //parameters_no = model_matrix.n_cols;
+
 
 
         }
@@ -412,8 +390,6 @@ List matrixgee_cpp(NumericMatrix data,
 
 
 
-        //arma::vec id_vector = as<arma::vec>(long_format_dataset["id"]);
-        //arma::vec repeated_vector = as<arma::vec>(long_format_dataset["rowcol_index"]);
 
 
         CharacterVector df_names = long_format_dataset.names();
@@ -429,8 +405,7 @@ List matrixgee_cpp(NumericMatrix data,
 
         arma::vec offset = arma::zeros(N);
         arma::vec weights = arma::ones(N);
-        //arma::vec beta_start = arma::zeros(p);
-        //arma::vec beta_start = arma::zeros(parameters_no);
+
         arma::vec beta_start = arma::zeros(parameters_no);
         arma::vec alpha_vector = arma::ones(1);
         double phi = 1.0;
@@ -446,10 +421,6 @@ List matrixgee_cpp(NumericMatrix data,
 
         Rcpp::Rcout << "First 5 rows of model_matrix:\n";
         model_matrix.rows(0,4).print();
-        //Rcpp::Rcout << " Full covariate column:\n";
-        //model_matrix.col(rows_no).t().print();
-        //Rcpp::Rcout << "Row means of model_matrix covariates:\n";
-        //Rcpp::Rcout << arma::mean(model_matrix.cols(10, 10), 1).t() << std::endl;
 
         Rcpp::Rcout << "First 5 entries of y:\n";
         y.subvec(0, 4).t().print();
@@ -486,13 +457,11 @@ List matrixgee_cpp(NumericMatrix data,
         double dispersion_param = independence_model["phi"];
 
 
-        //Rcout << "First 5 residuals: " << residuals.head(5).t();
-        //Rcout << "First 5 beta_hat: " << estimate_a.head(5).t();
-        //Rcout << "Dispersion param: " << dispersion_param << std::endl;
+
 
 
         Rcpp::NumericVector residuals_vec(residuals.begin(), residuals.end());
-        Rcout << "residuals size: " << residuals.size() << std::endl;
+
 
         NumericMatrix correlation_rows = correlation_rows_calc_cpp(
                 residuals_vec,
@@ -526,10 +495,8 @@ List matrixgee_cpp(NumericMatrix data,
 
 
         Rcpp::List fit_result;
-        //arma::vec residuals;
-        //arma::vec estimate_a;
-        beta_start = estimate_a;          // start from independence beta
-        //phi        = dispersion_param;    // keep phi in sync
+
+        beta_start = estimate_a;
 
         while (!converged && iteration < max_iter) {
                 iteration += 1;
@@ -549,11 +516,11 @@ List matrixgee_cpp(NumericMatrix data,
                 arma::vec new_beta    = Rcpp::as<arma::vec>(fit_result["beta_hat"]);
                 arma::vec new_resids  = Rcpp::as<arma::vec>(fit_result["residuals"]);
                 dispersion_param      = fit_result["phi"];
-                //phi                   = dispersion_param;
+
 
                 if (new_beta.n_elem == 0) Rcpp::stop("Error: null coefficient");
 
-                // Convergence check (max |Δβ|)
+
                 double diff = arma::max(arma::abs(new_beta - estimate_a));
                 if (diff < tol) {
                         estimate_a = new_beta;
@@ -580,7 +547,7 @@ List matrixgee_cpp(NumericMatrix data,
                 upper_triangular_vec = extract_upper_from_matrix(K);
         }
 
-        // Attach diagnostics (optional but useful)
+        // diagnostics
         fit_result["converged"]  = Rcpp::wrap(converged);
         fit_result["iterations"] = Rcpp::wrap(iteration);
         fit_result["beta_hat"]   = Rcpp::wrap(estimate_a);

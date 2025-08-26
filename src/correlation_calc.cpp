@@ -23,7 +23,7 @@ NumericMatrix correlation_general(NumericVector residuals,
                 }
                 return corr;
         }
-        // Step 1: Reshape residuals into r x (c * N) matrix
+        //  Reshape residuals into r x (c * N) matrix
         int total_elements = sample_size * rows_no * cols_no;
         NumericMatrix residuals_matrix_all(rows_no, cols_no * sample_size);
 
@@ -40,7 +40,7 @@ NumericMatrix correlation_general(NumericVector residuals,
         double denominator = 1.0;
         int dim = rows_no * cols_no;
 
-        // Step 2: Compute correlation
+        //  Compute correlation
         if (corstr == "Exchangeable") {
                 denominator = ((0.5 * sample_size * dim * (dim - 1)) - parameters_no) * dispersion_parameter;
 
@@ -53,7 +53,7 @@ NumericMatrix correlation_general(NumericVector residuals,
                                 }
                         }
 
-                        arma::vec resid_vec = arma::vectorise(resid_matrix_i); // rc x 1
+                        arma::vec resid_vec = arma::vectorise(resid_matrix_i);
 
                         for (int j = 0; j < dim - 1; ++j) {
                                 for (int k = j + 1; k < dim; ++k) {
@@ -88,10 +88,10 @@ NumericMatrix correlation_general(NumericVector residuals,
                                 }
                         }
 
-                        arma::vec resid_vec = arma::vectorise(resid_matrix_i); // rc x 1
+                        arma::vec resid_vec = arma::vectorise(resid_matrix_i);
 
                         for (int j = 0; j < dim - 1; ++j) {
-                                total_numerator += resid_vec(j) * resid_vec(j + 1); // lag-1 product
+                                total_numerator += resid_vec(j) * resid_vec(j + 1);
                         }
                 }
 

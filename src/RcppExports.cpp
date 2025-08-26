@@ -144,21 +144,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// create_design_matrix_cpp
-arma::mat create_design_matrix_cpp(int N, int r, int c, CharacterVector intercepts, arma::mat covariates_block);
-RcppExport SEXP _matrixgee_create_design_matrix_cpp(SEXP NSEXP, SEXP rSEXP, SEXP cSEXP, SEXP interceptsSEXP, SEXP covariates_blockSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type N(NSEXP);
-    Rcpp::traits::input_parameter< int >::type r(rSEXP);
-    Rcpp::traits::input_parameter< int >::type c(cSEXP);
-    Rcpp::traits::input_parameter< CharacterVector >::type intercepts(interceptsSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type covariates_block(covariates_blockSEXP);
-    rcpp_result_gen = Rcpp::wrap(create_design_matrix_cpp(N, r, c, intercepts, covariates_block));
-    return rcpp_result_gen;
-END_RCPP
-}
 // update_beta_gee_cc
 arma::vec update_beta_gee_cc(const arma::vec& y_vector, const arma::mat& model_matrix, const arma::vec& id_vector, const arma::vec& repeated_vector, const arma::vec& weights_vector, const char* link, const char* family, const arma::vec& beta_vector, const arma::vec& mu_vector, const arma::vec& eta_vector, const char * correlation_structure, const arma::vec& alpha_vector, const double& phi);
 RcppExport SEXP _matrixgee_update_beta_gee_cc(SEXP y_vectorSEXP, SEXP model_matrixSEXP, SEXP id_vectorSEXP, SEXP repeated_vectorSEXP, SEXP weights_vectorSEXP, SEXP linkSEXP, SEXP familySEXP, SEXP beta_vectorSEXP, SEXP mu_vectorSEXP, SEXP eta_vectorSEXP, SEXP correlation_structureSEXP, SEXP alpha_vectorSEXP, SEXP phiSEXP) {
@@ -602,26 +587,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// matrixgee_cpp_upd
-List matrixgee_cpp_upd(NumericMatrix data, SEXP covariates, CharacterVector intercepts, int sample_size, int rows_no, int cols_no, int max_iter, double tol, std::string corstr_rows, std::string corstr_cols);
-RcppExport SEXP _matrixgee_matrixgee_cpp_upd(SEXP dataSEXP, SEXP covariatesSEXP, SEXP interceptsSEXP, SEXP sample_sizeSEXP, SEXP rows_noSEXP, SEXP cols_noSEXP, SEXP max_iterSEXP, SEXP tolSEXP, SEXP corstr_rowsSEXP, SEXP corstr_colsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< SEXP >::type covariates(covariatesSEXP);
-    Rcpp::traits::input_parameter< CharacterVector >::type intercepts(interceptsSEXP);
-    Rcpp::traits::input_parameter< int >::type sample_size(sample_sizeSEXP);
-    Rcpp::traits::input_parameter< int >::type rows_no(rows_noSEXP);
-    Rcpp::traits::input_parameter< int >::type cols_no(cols_noSEXP);
-    Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
-    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
-    Rcpp::traits::input_parameter< std::string >::type corstr_rows(corstr_rowsSEXP);
-    Rcpp::traits::input_parameter< std::string >::type corstr_cols(corstr_colsSEXP);
-    rcpp_result_gen = Rcpp::wrap(matrixgee_cpp_upd(data, covariates, intercepts, sample_size, rows_no, cols_no, max_iter, tol, corstr_rows, corstr_cols));
-    return rcpp_result_gen;
-END_RCPP
-}
 // get_pearson_residuals
 arma::vec get_pearson_residuals(const char * family, const arma::vec& y_vector, const arma::vec& mu_vector, const arma::vec& weights_vector);
 RcppExport SEXP _matrixgee_get_pearson_residuals(SEXP familySEXP, SEXP y_vectorSEXP, SEXP mu_vectorSEXP, SEXP weights_vectorSEXP) {
@@ -1041,7 +1006,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_matrixgee_correlation_rows_updated_cpp", (DL_FUNC) &_matrixgee_correlation_rows_updated_cpp, 7},
     {"_matrixgee_get_covariance_matrices_cc", (DL_FUNC) &_matrixgee_get_covariance_matrices_cc, 12},
     {"_matrixgee_covariates_upd", (DL_FUNC) &_matrixgee_covariates_upd, 4},
-    {"_matrixgee_create_design_matrix_cpp", (DL_FUNC) &_matrixgee_create_design_matrix_cpp, 5},
     {"_matrixgee_update_beta_gee_cc", (DL_FUNC) &_matrixgee_update_beta_gee_cc, 13},
     {"_matrixgee_update_beta_naive_cc", (DL_FUNC) &_matrixgee_update_beta_naive_cc, 13},
     {"_matrixgee_update_beta_robust_cc", (DL_FUNC) &_matrixgee_update_beta_robust_cc, 13},
@@ -1069,7 +1033,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_matrixgee_validmu", (DL_FUNC) &_matrixgee_validmu, 2},
     {"_matrixgee_matrixgee_cpp", (DL_FUNC) &_matrixgee_matrixgee_cpp, 10},
     {"_matrixgee_matrixgee_cpp_nokron", (DL_FUNC) &_matrixgee_matrixgee_cpp_nokron, 9},
-    {"_matrixgee_matrixgee_cpp_upd", (DL_FUNC) &_matrixgee_matrixgee_cpp_upd, 10},
     {"_matrixgee_get_pearson_residuals", (DL_FUNC) &_matrixgee_get_pearson_residuals, 4},
     {"_matrixgee_get_phi_hat", (DL_FUNC) &_matrixgee_get_phi_hat, 2},
     {"_matrixgee_alpha_hat_exchangeable", (DL_FUNC) &_matrixgee_alpha_hat_exchangeable, 4},

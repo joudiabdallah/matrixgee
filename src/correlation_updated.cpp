@@ -22,7 +22,7 @@ NumericMatrix correlation_general_updated(NumericVector residuals,
                 return corr;
         }
 
-        // Step 1: reshape residual vector into residuals_matrix_all (r x c*N)
+        //  reshape residual vector into residuals_matrix_all (r x c*N)
         int total_elements = sample_size * rows_no * cols_no;
         NumericMatrix residuals_matrix_all(rows_no, cols_no * sample_size);
 
@@ -49,7 +49,7 @@ NumericMatrix correlation_general_updated(NumericVector residuals,
                                 }
                         }
 
-                        arma::vec resid_vec = vectorise(resid_matrix_i); // rc x 1
+                        arma::vec resid_vec = vectorise(resid_matrix_i);
 
                         for (int j = 0; j < dim - 1; ++j) {
                                 for (int k = j + 1; k < dim; ++k) {
@@ -70,20 +70,19 @@ NumericMatrix correlation_general_updated(NumericVector residuals,
                                 }
                         }
 
-                        arma::vec resid_vec = vectorise(resid_matrix_i); // rc x 1
-
+                        arma::vec resid_vec = vectorise(resid_matrix_i);
                         for (int j = 0; j < dim - 1; ++j) {
-                                total_numerator += resid_vec(j) * resid_vec(j + 1); // lag-1 product
+                                total_numerator += resid_vec(j) * resid_vec(j + 1);
                         }
                 }
         }
 
-        // Step 3: Estimate rho
+        //  Estimate rho
         double rho_hat_trial = total_numerator / denominator;
         double lower_bound = -1.0 / (dim - 1);
         double rho_hat = (rho_hat_trial >= lower_bound && rho_hat_trial <= 1.0) ? rho_hat_trial : 0.87;
 
-        // Step 4: Return correlation matrix
+        //Return correlation matrix
         NumericMatrix corr(dim, dim);
         if (corstr == "Exchangeable") {
                 for (int i = 0; i < dim; ++i) {

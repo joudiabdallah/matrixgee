@@ -34,9 +34,7 @@ NumericMatrix correlation_rows_updated_cpp(NumericVector residuals,
                 res_matrix(row_idx, col_idx) = residuals[i];
         }
 
-        //double sum_sq = sum(residuals * residuals);
-        //double a = sample_size * rows_no * cols_no - parameters_no;
-        //double dispersion = sum_sq / a;
+
         double denominator = 1.0;
         double total_numerator = 0.0;
 

@@ -33,10 +33,7 @@ NumericMatrix correlation_cols_updated_cpp(NumericVector residuals,
                 residuals_matrix_all(row_idx, col_idx) = residuals[i];
         }
 
-        // Calculate dispersion
-        //double sum_sq = sum(residuals * residuals);
-        //double a = sample_size * rows_no * cols_no - parameters_no;
-        //double dispersion_parameter = sum_sq / a;
+
 
         double denominator_cols = 1.0;
         double total_numerator_cols = 0.0;

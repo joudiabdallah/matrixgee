@@ -47,7 +47,7 @@ DataFrame matrix_to_long_dataframe_cpp(NumericMatrix data, int sample_size, int 
                 Named("rowcol_index") = rowcol_index
         );
 
-        // Explicitly set column names to avoid ambiguity from R
+
         CharacterVector new_names = CharacterVector::create("y", "id", "row_index", "col_index", "rowcol_index");
         long_df.attr("names") = new_names;
 
